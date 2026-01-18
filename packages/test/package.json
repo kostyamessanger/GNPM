@@ -1,0 +1,11 @@
+{
+  "name": "test-package",
+  "version": "1.0.0",
+  "description": "Пример тестового пакета для gnpm",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test.js"
+  },
+  "author": "Ваше Имя",
+  "license": "MIT"
+}
