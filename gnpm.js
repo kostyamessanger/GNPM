@@ -5,10 +5,10 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 
-// URL вашего репозитория на GitHub (замените "ваш-ник")
-const REPO_URL = 'https://raw.githubusercontent.com/ваш-ник/gnpm/main';
+// Укажите ваш GitHub-ник и название репозитория
+const REPO_URL = 'https://raw.githubusercontent.com/kostyamessanger/gnpm/main';
 
-// Разбор аргументов
+// Разбор аргументов командной строки
 const args = process.argv.slice(2);
 if (args[0] !== 'install' || !args[1]) {
   console.log('Usage: gnpm install <package-name>');
@@ -18,16 +18,18 @@ if (args[0] !== 'install' || !args[1]) {
 const packageName = args[1];
 const cwd = process.cwd();
 
-// Пути
+// Пути к необходимым директориям
 const nodeModulesDir = path.join(cwd, 'node_modules');
 const targetDir = path.join(nodeModulesDir, packageName);
 const packagesDir = path.join(cwd, 'packages');
 const zipPath = path.join(packagesDir, `${packageName}.zip`);
 
+
 console.log('\n🔍 GNPM Installer');
 console.log('───────────────────────────────────────────────');
 
-// 1. Проверка: установлен ли пакет
+
+// 1. Проверка: установлен ли пакет уже
 if (fs.existsSync(targetDir)) {
   console.log(`❌ ${packageName} уже установлен в node_modules/`);
   process.exit(0);
@@ -36,14 +38,14 @@ if (fs.existsSync(targetDir)) {
 console.log(`✅ Пакет ${packageName} не найден. Начинаем установку...`);
 
 
-// 2. Создание папок
+// 2. Создание необходимых директорий
 if (!fs.existsSync(nodeModulesDir)) {
   console.log('⏳ Создаю папку node_modules/');
-  fs.mkdirSync(nodeModulesDir);
+  fs.mkdirSync(nodeModulesDir, { recursive: true });
 }
 if (!fs.existsSync(packagesDir)) {
   console.log('⏳ Создаю папку packages/');
-  fs.mkdirSync(packagesDir);
+  fs.mkdirSync(packagesDir, { recursive: true });
 }
 
 // 3. Проверка наличия package.json в репозитории
@@ -124,5 +126,5 @@ https.get(`${REPO_URL}/packages/${packageName}/package.json`, (res) => {
   console.error(`   URL: ${REPO_URL}/packages/${packageName}/package.json`);
   process.exit(1);
 });
-  
-v2.0
+
+v3.0
